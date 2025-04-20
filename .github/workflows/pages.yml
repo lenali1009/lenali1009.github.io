@@ -20,8 +20,19 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Debug Info
+        run: |
+          echo "Current directory: $(pwd)"
+          ls -la
+          echo "Contents of index.html:"
+          head -n 5 index.html
+
       - name: Setup Pages
         uses: actions/configure-pages@v3
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
