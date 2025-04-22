@@ -2,12 +2,15 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>星涵资本 - 专业投资服务机构</title>
     <!-- 引入字体图标 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- 引入动画库 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <!-- 引入Swiper轮播 -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <!-- 高德地图API -->
     <script type="text/javascript">
         window._AMapSecurityConfig = {
@@ -21,6 +24,7 @@
             padding: 0;
             box-sizing: border-box;
             font-family: "Microsoft YaHei", sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         :root {
@@ -37,6 +41,7 @@
             line-height: 1.6;
             background-color: var(--light-bg);
             position: relative;
+            overflow-x: hidden;
         }
 
         body::before {
@@ -63,13 +68,39 @@
             filter: contrast(1.1) brightness(0.9);
         }
 
+        /* 移动端菜单按钮 */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 21px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .menu-toggle span {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background-color: white;
+            transition: all 0.3s ease;
+        }
+
         /* 导航栏样式 */
         .navbar {
             position: fixed;
             top: 0;
             width: 100%;
             background: transparent;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
             z-index: 1000;
+        }
+
+        .navbar.scrolled {
+            background: rgba(26, 75, 132, 0.95);
         }
 
         .nav-container {
@@ -79,7 +110,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: transparent;
         }
 
         .logo {
@@ -642,16 +672,40 @@
 
         /* 响应式设计 */
         @media (max-width: 768px) {
+            .menu-toggle {
+                display: flex;
+            }
+
             .nav-links {
-                display: none;
+                position: fixed;
+                top: 0;
+                right: -100%;
+                height: 100vh;
+                width: 80%;
+                max-width: 300px;
+                background: var(--primary-color);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                transition: right 0.3s ease;
+                padding: 2rem;
             }
 
-            .banner h1 {
-                font-size: 2.5rem;
+            .nav-links.active {
+                right: 0;
             }
 
-            .banner p {
-                font-size: 1.2rem;
+            .logo img {
+                height: 80px;
+                margin-left: 0;
+            }
+
+            .banner-line-1 {
+                font-size: 2rem;
+            }
+
+            .banner-line-2 {
+                font-size: 1.6rem;
             }
 
             .about-content {
@@ -809,6 +863,148 @@
 
             .contact-map {
                 min-height: 300px;
+            }
+        }
+
+        /* 添加触摸滑动效果 */
+        .swiper-container {
+            width: 100%;
+            height: 100%;
+        }
+
+        .swiper-slide {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* 添加页面切换动画 */
+        .section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 移动端响应式样式 */
+        @media screen and (max-width: 768px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            .navbar {
+                padding: 10px 15px;
+            }
+
+            .nav-links {
+                display: none;
+                position: fixed;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                height: calc(100vh - 60px);
+                background: rgba(0, 0, 0, 0.95);
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                padding-top: 20px;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links a {
+                margin: 15px 0;
+                font-size: 18px;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .banner {
+                height: 60vh;
+                padding: 20px 0;
+            }
+
+            .banner h1 {
+                font-size: 32px;
+                margin-bottom: 15px;
+            }
+
+            .banner p {
+                font-size: 16px;
+                margin-bottom: 20px;
+            }
+
+            .section {
+                padding: 40px 0;
+            }
+
+            .section-title {
+                font-size: 28px;
+                margin-bottom: 30px;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .card {
+                padding: 15px;
+            }
+
+            .footer {
+                padding: 30px 15px;
+            }
+
+            /* 动画效果 */
+            .section {
+                opacity: 0;
+                transform: translateY(30px);
+                transition: all 0.6s ease-out;
+            }
+
+            .section.visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            /* 轮播图样式 */
+            .swiper-container {
+                height: 40vh;
+            }
+
+            .swiper-slide {
+                padding: 0 15px;
+            }
+
+            .swiper-pagination {
+                bottom: 10px;
+            }
+
+            .swiper-button-next,
+            .swiper-button-prev {
+                display: none;
+            }
+        }
+
+        /* 添加触摸反馈效果 */
+        @media (hover: none) {
+            a:active,
+            button:active {
+                opacity: 0.7;
+                transform: scale(0.98);
+            }
+
+            .card:active {
+                transform: translateY(2px);
             }
         }
     </style>
@@ -1217,6 +1413,97 @@
                 document.getElementById('container').innerHTML = '地图加载中...';
             }
         });
+
+        // 移动端菜单
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
+        });
+
+        // 滚动效果
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+
+            // 添加滚动动画
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                const sectionTop = section.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                if (sectionTop < windowHeight * 0.75) {
+                    section.classList.add('visible');
+                }
+            });
+        });
+
+        // 初始化 Swiper
+        const swiper = new Swiper('.swiper-container', {
+            direction: 'horizontal',
+            loop: true,
+            autoplay: {
+                delay: 5000,
+                disableOnInteraction: false,
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+        });
+
+        // 添加触摸滑动
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const diff = touchEndX - touchStartX;
+            
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0) {
+                    // 向右滑动
+                    swiper.slidePrev();
+                } else {
+                    // 向左滑动
+                    swiper.slideNext();
+                }
+            }
+        }
+
+        // 禁用双击缩放
+        document.addEventListener('touchstart', (event) => {
+            if (event.touches.length > 1) {
+                event.preventDefault();
+            }
+        }, { passive: false });
+
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', (event) => {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
     </script>
 </body>
 </html>
